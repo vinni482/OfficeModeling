@@ -6,8 +6,21 @@ using System.Threading.Tasks;
 
 namespace OfficeModeling
 {
-    class Manager
+    class Manager : Employee, IPosition
     {
+        decimal _rate = 600;
 
+        public Manager()
+        { }
+
+        public Manager(int combiningPositions)
+        {
+            positions.Add(new Designer());
+        }
+
+        public decimal Rate
+        {
+            get { return _rate; }
+        }
     }
 }

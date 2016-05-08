@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace OfficeModeling
 {
-    class Cleaner : Employee, IPosition
+    class Employee
     {
-        decimal _rate = 200;
-
-        public decimal Rate
-        {
-            get { return _rate; }
-        }
+        public List<IPosition> positions = new List<IPosition>();
+        public bool IsAvailable = true;
+        
     }
 }

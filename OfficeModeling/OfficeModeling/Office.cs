@@ -5,57 +5,59 @@ namespace OfficeModeling
 {
     class Office
     {
-        enum Employees { Programmers, Designers, Testers, Managers, Cleaners };
-
-        List<Programmer> programmers = new List<Programmer>();
-        List<Designer> designers = new List<Designer>();
-        List<Tester> testers = new List<Tester>();
-        List<Manager> managers = new List<Manager>();
-        List<Director> directors = new List<Director>();
-        List<Accountant> accountants = new List<Accountant>();
-        List<Cleaner> cleaners = new List<Cleaner>();
-
+        enum Positions { Programmer, Designer, Tester, Manager, Director, Accountant, Cleaner };
+        List<Employee> _employees = new List<Employee>();
         uint _employeesNumber { set; get; }
 
         public Office(uint employeesNumber)
         {
+            Random rand = new Random();
+
             _employeesNumber = employeesNumber;
-
-            directors.Add(new Director()); //Директоров и бухгалтеров в офисе будет по одному
-            managers.Add(new Manager());
-            accountants.Add(new Accountant());
-
+            
+            _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)))); //Случайно генерируется выполняет ли директор обязанности менеджера
+            _employees.Add(new Manager(rand.Next(3))); //Случайно генерируется количество совмещаемых должностей (0-2)
+            _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2))));
+            
             if ((int)_employeesNumber - 3 > 0)
             {
-                Random rand = new Random();
-
                 for (int i = 0; i < _employeesNumber - 3; i++)
                 {
-                    switch ((Employees)rand.Next(0, 5))
+                    switch ((Positions)rand.Next(0, 7)) //Случайно выбираются сотрудники в офис
                     {
-                        case Employees.Programmers:
+                        case Positions.Programmer:
                             {
-                                Console.WriteLine(Employees.Programmers);
+                                _employees.Add(new Programmer(rand.Next(3))); 
                                 break;
                             }
-                        case Employees.Designers:
+                        case Positions.Designer:
                             {
-                                Console.WriteLine(Employees.Designers);
+                                _employees.Add(new Designer(rand.Next(3)));
                                 break;
                             }
-                        case Employees.Testers:
+                        case Positions.Tester:
                             {
-                                Console.WriteLine(Employees.Testers);
+                                _employees.Add(new Tester(rand.Next(3)));
                                 break;
                             }
-                        case Employees.Managers:
+                        case Positions.Manager:
                             {
-                                Console.WriteLine(Employees.Managers);
+                                _employees.Add(new Manager(rand.Next(3)));
                                 break;
                             }
-                        case Employees.Cleaners:
+                        case Positions.Director:
                             {
-                                Console.WriteLine(Employees.Cleaners);
+                                _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)))); 
+                                break;
+                            }
+                        case Positions.Accountant:
+                            {
+                                _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)))); 
+                                break;
+                            }
+                        case Positions.Cleaner:
+                            {
+                                _employees.Add(new Cleaner());
                                 break;
                             }
                     }
@@ -69,7 +71,8 @@ namespace OfficeModeling
                 throw new Exception("Can't start the Office. The number of employees must be greater than 10.");
             else
             {
-                Console.WriteLine(_employeesNumber);
+                Console.WriteLine(_employees[9].positions.Count);
+                
             }
         }
     }
