@@ -10,6 +10,6 @@ namespace OfficeModeling
     {
         public List<IPosition> positions = new List<IPosition>();
         public bool IsAvailable = true;
-        
+        public enum AdditionalPositions { Programmer, Designer, Tester, Manager, Cleaner };
     }
 }

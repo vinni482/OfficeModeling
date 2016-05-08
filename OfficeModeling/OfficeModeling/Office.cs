@@ -71,8 +71,14 @@ namespace OfficeModeling
                 throw new Exception("Can't start the Office. The number of employees must be greater than 10.");
             else
             {
-                Console.WriteLine(_employees[9].positions.Count);
-                
+                foreach (var item in _employees)
+                {
+                    Console.WriteLine("Основная должность - " + item);
+                    foreach (var item2 in item.positions)
+                    {
+                        Console.WriteLine("\t\tСовмещает: " + item2);
+                    }
+                }
             }
         }
     }

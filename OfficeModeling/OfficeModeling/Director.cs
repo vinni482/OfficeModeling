@@ -9,6 +9,7 @@ namespace OfficeModeling
     class Director : Employee, IPosition
     {
         decimal _rate = 800;
+        string _name = "Director";
 
         public Director()
         { }
@@ -22,6 +23,19 @@ namespace OfficeModeling
         public decimal Rate
         {
             get { return _rate; }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ((IPosition)obj).Name == this.Name;
         }
     }
 }
