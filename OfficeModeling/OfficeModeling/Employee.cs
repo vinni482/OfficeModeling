@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeModeling
 {
@@ -16,14 +13,13 @@ namespace OfficeModeling
 
         public bool IsWorking(DateTime time)
         {
+            bool res = false;
             foreach (var day in workingDays)
             {
                 if (day.day == time.DayOfWeek && time.Hour >= day.startWorkingDay && time.Hour < (day.startWorkingDay + day.hours))
-                    return true;
-                else
-                    return false;
+                    res = true;
             }
-            return false;
+            return res;
         }
     }
 }

@@ -74,6 +74,7 @@ namespace OfficeModeling
                 foreach (var item in _employees)
                 {
                     Console.WriteLine("Основная должность - " + item);
+                    Console.WriteLine(item.IsWorking(new DateTime(2016, 05, 9, 12, 30, 0)));
 
                     foreach (var days in item.workingDays)
                     {
