@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeModeling
 {
@@ -11,12 +7,20 @@ namespace OfficeModeling
         decimal _rate = 800;
         string _name = "Programmer";
 
-        public Programmer()
-        { }
-//Перегрузить равенство по имени?
-        public Programmer(int combiningPositions)
+        public Programmer() { }
+
+        public Programmer(int combiningPositions, Random rand)
         {
-            Random rand = new Random();
+            #region Добавление рабочих дней
+            do
+            {
+                WorkingDay workingDay = new WorkingDay() { day = (DayOfWeek)rand.Next(7), startWorkingDay = rand.Next(8, 13), hours = rand.Next(6, 9) };
+                if(!workingDays.Contains(workingDay))
+                    workingDays.Add(workingDay);
+            } while (workingDays.Count < 5);
+            #endregion
+
+            #region Добавление совмещаемых позиций
             for (int i = 0; i < combiningPositions; i++)
             {
                 switch ((AdditionalPositions)rand.Next(0, 5))
@@ -51,6 +55,7 @@ namespace OfficeModeling
                         }
                 }
             } 
+            #endregion
         }
 
         public decimal Rate

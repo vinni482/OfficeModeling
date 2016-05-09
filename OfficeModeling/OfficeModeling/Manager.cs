@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeModeling
 {
@@ -11,12 +7,19 @@ namespace OfficeModeling
         decimal _rate = 600;
         string _name = "Manager";
 
-        public Manager()
-        { }
+        public Manager() { }
 
-        public Manager(int combiningPositions)
+        public Manager(int combiningPositions, Random rand)
         {
-            Random rand = new Random();
+            #region Добавление рабочих дней
+            do
+            {
+                WorkingDay workingDay = new WorkingDay() { day = (DayOfWeek)rand.Next(7), startWorkingDay = rand.Next(8, 13), hours = rand.Next(6, 9) };
+                if (!workingDays.Contains(workingDay))
+                    workingDays.Add(workingDay);
+            } while (workingDays.Count < 5);
+            #endregion
+
             for (int i = 0; i < combiningPositions; i++)
             {
                 switch ((AdditionalPositions)rand.Next(0, 5))
@@ -60,10 +63,7 @@ namespace OfficeModeling
 
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get { return _name; }
         }
 
         public override bool Equals(object obj)

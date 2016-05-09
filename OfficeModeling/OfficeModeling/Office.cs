@@ -15,9 +15,9 @@ namespace OfficeModeling
 
             _employeesNumber = employeesNumber;
             
-            _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)))); //Случайно генерируется выполняет ли директор обязанности менеджера
-            _employees.Add(new Manager(rand.Next(3))); //Случайно генерируется количество совмещаемых должностей (0-2)
-            _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2))));
+            _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand)); //Случайно генерируется выполняет ли директор обязанности менеджера
+            _employees.Add(new Manager(rand.Next(3), rand)); //Случайно генерируется количество совмещаемых должностей (0-2)
+            _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand));
             
             if ((int)_employeesNumber - 3 > 0)
             {
@@ -27,37 +27,37 @@ namespace OfficeModeling
                     {
                         case Positions.Programmer:
                             {
-                                _employees.Add(new Programmer(rand.Next(3))); 
+                                _employees.Add(new Programmer(rand.Next(3), rand)); 
                                 break;
                             }
                         case Positions.Designer:
                             {
-                                _employees.Add(new Designer(rand.Next(3)));
+                                _employees.Add(new Designer(rand.Next(3), rand));
                                 break;
                             }
                         case Positions.Tester:
                             {
-                                _employees.Add(new Tester(rand.Next(3)));
+                                _employees.Add(new Tester(rand.Next(3), rand));
                                 break;
                             }
                         case Positions.Manager:
                             {
-                                _employees.Add(new Manager(rand.Next(3)));
+                                _employees.Add(new Manager(rand.Next(3), rand));
                                 break;
                             }
                         case Positions.Director:
                             {
-                                _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)))); 
+                                _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand)); 
                                 break;
                             }
                         case Positions.Accountant:
                             {
-                                _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)))); 
+                                _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand)); 
                                 break;
                             }
                         case Positions.Cleaner:
                             {
-                                _employees.Add(new Cleaner());
+                                _employees.Add(new Cleaner(true, rand));
                                 break;
                             }
                     }
@@ -74,6 +74,12 @@ namespace OfficeModeling
                 foreach (var item in _employees)
                 {
                     Console.WriteLine("Основная должность - " + item);
+
+                    foreach (var days in item.workingDays)
+                    {
+                        Console.WriteLine("\t" + days.day + " " + days.startWorkingDay + "-" + (days.hours + days.startWorkingDay));
+                    }
+
                     foreach (var item2 in item.positions)
                     {
                         Console.WriteLine("\t\tСовмещает: " + item2);
