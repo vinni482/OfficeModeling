@@ -4,7 +4,7 @@ namespace OfficeModeling
 {
     class Designer : Employee, IPosition
     {
-        decimal _rate = 400;
+        public static decimal _rate = 400;
         string _name = "Designer";
 
         public Designer() { }
@@ -28,7 +28,7 @@ namespace OfficeModeling
                     case AdditionalPositions.Programmer:
                         {
                             Programmer prog = new Programmer();
-                            if(!positions.Contains(prog))
+                            if (!positions.Contains(prog))
                                 positions.Add(prog);
                             break;
                         }
@@ -56,18 +56,15 @@ namespace OfficeModeling
                 }
             }
         }
-
-        public decimal Rate
-        {
-            get { return _rate; }
-        }
-
+        
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get { return _name; }
+        }
+
+        public override void Do(OfficeTask task, DateTime startTaskTime)
+        {
+            Console.WriteLine("Designer");
         }
 
         public override bool Equals(object obj)

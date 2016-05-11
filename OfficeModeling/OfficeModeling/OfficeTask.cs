@@ -7,7 +7,8 @@ namespace OfficeModeling
         public Guid guid; //Уникальный идентификатор задачи
         public string name; //Название задачи
         public int priority; //Приоритет задачи
-        public string agent; //Исполнитель
+        public Type agent; //Исполнитель
+        public decimal rate; //Стоимость выполнения часа задания
 
         public override bool Equals(object obj)
         {
@@ -16,7 +17,7 @@ namespace OfficeModeling
 
         public override string ToString()
         {
-            return name + " (priority: " + priority + ")";
+            return name + " (priority: " + priority + ", rate: " + rate +  ")";
         }
     }
 }

@@ -4,7 +4,7 @@ namespace OfficeModeling
 {
     class Accountant : Employee, IPosition
     {
-        decimal _rate = 500;
+        public static decimal _rate = 500;
         string _name = "Accountant";
 
         public Accountant() { }
@@ -21,19 +21,21 @@ namespace OfficeModeling
             #endregion
 
             if (IsCombines)
+            {
                 positions.Add(new Manager());
+            }
+        }
+
+        public override void Do(OfficeTask task, DateTime startTaskTime)
+        {
+            Console.WriteLine("Accountant");
         }
 
         public string Name
         {
             get { return _name; }
         }
-
-        public decimal Rate
-        {
-            get { return _rate; }
-        }
-
+        
         public override bool Equals(object obj)
         {
             return ((IPosition)obj).Name == this.Name;

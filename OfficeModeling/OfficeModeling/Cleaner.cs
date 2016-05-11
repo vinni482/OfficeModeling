@@ -4,7 +4,7 @@ namespace OfficeModeling
 {
     class Cleaner : Employee, IPosition
     {
-        decimal _rate = 200;
+        public static decimal _rate = 200;
         string _name = "Cleaner";
 
         public Cleaner() { }
@@ -26,9 +26,9 @@ namespace OfficeModeling
             get { return _name; }
         }
 
-        public decimal Rate
+        public override void Do(OfficeTask task, DateTime startTaskTime)
         {
-            get { return _rate; }
+            Console.WriteLine("Cleaner");
         }
 
         public override bool Equals(object obj)

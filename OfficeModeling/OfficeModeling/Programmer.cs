@@ -4,7 +4,7 @@ namespace OfficeModeling
 {
     class Programmer : Employee, IPosition
     {
-        decimal _rate = 800;
+        public static decimal _rate = 800;
         string _name = "Programmer";
 
         public Programmer() { }
@@ -58,14 +58,14 @@ namespace OfficeModeling
             #endregion
         }
 
-        public decimal Rate
-        {
-            get { return _rate; }
-        }
-
         public string Name
         {
             get { return _name; }
+        }
+
+        public override void Do(OfficeTask task, DateTime startTaskTime)
+        {
+            Console.WriteLine("Programmer");
         }
 
         public override bool Equals(object obj)

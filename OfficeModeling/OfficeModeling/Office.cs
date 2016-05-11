@@ -10,17 +10,18 @@ namespace OfficeModeling
         uint _employeesNumber { set; get; }
 
         public List<OfficeTask> _tasks = new List<OfficeTask>();
+        List<OfficeTask> _runningTasks = new List<OfficeTask>();
 
         public Office(uint employeesNumber)
         {
             Random rand = new Random();
 
             _employeesNumber = employeesNumber;
-            
+
             _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand, this)); //Случайно генерируется выполняет ли директор обязанности менеджера
             _employees.Add(new Manager(rand.Next(3), rand)); //Случайно генерируется количество совмещаемых должностей (0-2)
             _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand));
-            
+
             if ((int)_employeesNumber - 3 > 0)
             {
                 for (int i = 0; i < _employeesNumber - 3; i++)
@@ -29,7 +30,7 @@ namespace OfficeModeling
                     {
                         case Positions.Programmer:
                             {
-                                _employees.Add(new Programmer(rand.Next(3), rand)); 
+                                _employees.Add(new Programmer(rand.Next(3), rand));
                                 break;
                             }
                         case Positions.Designer:
@@ -50,12 +51,12 @@ namespace OfficeModeling
                         case Positions.Director:
                             {
                                 Director director = new Director(Convert.ToBoolean(rand.Next(2)), rand, this);
-                                _employees.Add(director); 
+                                _employees.Add(director);
                                 break;
                             }
                         case Positions.Accountant:
                             {
-                                _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand)); 
+                                _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand));
                                 break;
                             }
                         case Positions.Cleaner:
@@ -99,9 +100,52 @@ namespace OfficeModeling
                 {
                     for (int hour = 0; hour < 24; hour++)
                     {
-                        onClock(new DateTime(2016, 06, day, hour, 0, 0));
+                        DateTime time = new DateTime(2016, 06, day, hour, 0, 0);
+                        onClock(time);
+
+                        //Проходим по списку задач, раздавая задания соответствующим сотрудникам, если есть в наличии, и свободен, и если подходит по должности
+                        for(int i=0; i<_tasks.Count; i++)
+                        {
+                            for(int j=0; j<_employees.Count; j++)
+                            {
+                                //Вызываем метод у сотрудника. В него передаем задачу. В сотруднике генерируем случайное время 1-2 часа. Ставим флаг available=false
+                                //Из задач переносим в список выполняющихся.
+                                //И подписаться ранее надо на сотрудника. Он сгенерирует потом событие завершения выполнения задания и вернет задачу, которую удалить
+                                if (_employees[j].IsAvailable && _employees[j].IsWorking(time)) //Если сотрудник в смене и не занят
+                                {
+                                    if (_employees[j].GetType() == _tasks[i].agent) //Проверяем, подходит ли по должности
+                                    {
+                                        _employees[j].Do(_tasks[i], time);
+                                        _runningTasks.Add(_tasks[i]);
+                                        _tasks.Remove(_tasks[i]);
+                                        i--;
+                                        break; //Завершает этот цикл, берем следующую задачу
+                                    }
+                                    else //Если не подходит
+                                    {
+                                        foreach (var position in _employees[j].positions) //Проверяем совмещаемые должности
+                                        {
+                                            if (position.GetType() == _tasks[i].agent)
+                                            {
+                                                _employees[j].Do(_tasks[i], time);
+                                                _runningTasks.Add(_tasks[i]);
+                                                _tasks.Remove(_tasks[i]);
+                                                i--;
+                                                j = _employees.Count; //Чтобы выйти из цикла проверки оставшихся сотрудников для задачи, которую удалили
+                                                break; //Завершаем цикл проверки совмещаемых должностей
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                }   
+                }
+
+                foreach (var item in _tasks)
+                {
+                    Console.WriteLine(item);
+                }
             }
         }
     }

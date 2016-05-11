@@ -21,5 +21,7 @@ namespace OfficeModeling
             }
             return res;
         }
+
+        public virtual void Do(OfficeTask task, DateTime startTaskTime) { }
     }
 }

@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OfficeModeling
 {
     class Director : Employee, IPosition
     {
-        decimal _rate = 800;
+        public static decimal _rate = 800;
         string _name = "Director";
         Random _rand;
         Office _office;
         List<OfficeTask> _setOfDuties = new List<OfficeTask>()
         {
-            new OfficeTask { agent = "Programmer", name = "Write code" },
-            new OfficeTask { agent = "Designer", name = "Draw the layout" },
-            new OfficeTask { agent = "Tester", name = "Test the program" },
-            new OfficeTask { agent = "Manager", name = "Sell services" },
-            new OfficeTask { agent = "Accountant", name = "Make report" },
-            new OfficeTask { agent = "Cleaner", name = "Clean the office" }
+            new OfficeTask { agent = typeof(Programmer), name = "Write code", rate = Programmer._rate },
+            new OfficeTask { agent = typeof(Designer), name = "Draw the layout", rate = Designer._rate },
+            new OfficeTask { agent = typeof(Tester), name = "Test the program", rate = Tester._rate },
+            new OfficeTask { agent = typeof(Manager), name = "Sell services", rate = Manager._rate },
+            new OfficeTask { agent = typeof(Accountant), name = "Make report", rate = Accountant._rate },
+            new OfficeTask { agent = typeof(Cleaner), name = "Clean the office", rate = Cleaner._rate }
         };
 
         void GiveOrders(DateTime time)
@@ -31,6 +32,7 @@ namespace OfficeModeling
                     officetask.guid = Guid.NewGuid();
                     officetask.priority = _rand.Next(1, 7);
                     _office._tasks.Add(officetask);
+                    _office._tasks = _office._tasks.OrderBy(a => a.priority).ThenByDescending(a=>a.rate).ToList();
 
                     Console.WriteLine("\t" + officetask);
                 }                
@@ -57,12 +59,7 @@ namespace OfficeModeling
             if (IsCombines)
                 positions.Add(new Manager());
         }
-
-        public decimal Rate
-        {
-            get { return _rate; }
-        }
-
+        
         public string Name
         {
             get { return _name; }
@@ -71,6 +68,11 @@ namespace OfficeModeling
         public override bool Equals(object obj)
         {
             return ((IPosition)obj).Name == this.Name;
+        }
+
+        public override void Do(OfficeTask task, DateTime startTaskTime)
+        {
+            Console.WriteLine("Director");
         }
     }
 }
