@@ -7,13 +7,15 @@ namespace OfficeModeling
     {
         public List<IPosition> positions = new List<IPosition>();
         public List<WorkingDay> workingDays = new List<WorkingDay>();
+        public List<CompletedTask> completedTasks = new List<CompletedTask>();
         public bool IsAvailable = true; //false - в случае, если в процессе выполнения задания
 
-        public Office _office;
-        public OfficeTask _task;
-        public DateTime _endTaskTime;
-        public Random _rand;
-        public string _employeeName;
+        public Office _office { set; get; }
+        public OfficeTask _task { set; get; }
+        public DateTime _startTaskTime { set; get; }
+        public DateTime _endTaskTime { set; get; }
+        public Random _rand { set; get; }
+        public string _employeeName { set; get; }
 
         protected enum AdditionalPositions { Programmer, Designer, Tester, Manager, Cleaner };
         protected Employee _baseEmployee; //Ссылка на базовый класс для совмещаемых позиций
@@ -53,8 +55,9 @@ namespace OfficeModeling
 
         public virtual void Do(OfficeTask task, DateTime startTaskTime)
         {
-            Console.WriteLine("!!" + task + " " + startTaskTime);
+            Console.WriteLine(startTaskTime + " Выполняется: " + task);
             _task = task;
+            _startTaskTime = startTaskTime;
             _endTaskTime = new DateTime(startTaskTime.Year, startTaskTime.Month, startTaskTime.Day, startTaskTime.Hour + _rand.Next(1, 3), startTaskTime.Minute, startTaskTime.Second);
             IsAvailable = false; 
         }

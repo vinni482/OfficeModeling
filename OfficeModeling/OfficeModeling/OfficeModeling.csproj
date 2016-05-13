@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Accountant.cs" />
     <Compile Include="Cleaner.cs" />
+    <Compile Include="CompletedTask.cs" />
     <Compile Include="Designer.cs" />
     <Compile Include="Director.cs" />
     <Compile Include="Employee.cs" />

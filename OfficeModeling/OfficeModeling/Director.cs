@@ -24,7 +24,7 @@ namespace OfficeModeling
             {
                 for (int i = 0; i < _rand.Next(1, 4); i++)
                 {
-                    Console.WriteLine(time + " " + _name + ": ");
+                    Console.Write(time + " " + _name + ": ");
 
                     OfficeTask officetask = _setOfDuties[_rand.Next(6)];
                     officetask.guid = Guid.NewGuid();
@@ -32,7 +32,7 @@ namespace OfficeModeling
                     _office._tasks.Add(officetask);
                     _office._tasks = _office._tasks.OrderBy(a => a.priority).ThenByDescending(a=>a.rate).ToList();
 
-                    Console.WriteLine("\t" + officetask);
+                    Console.WriteLine(officetask);
                 }                
             }
         }

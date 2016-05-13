@@ -4,11 +4,11 @@ namespace OfficeModeling
 {
     class OfficeTask
     {
-        public Guid guid; //Уникальный идентификатор задачи
-        public string name; //Название задачи
-        public int priority; //Приоритет задачи
-        public Type agent; //Исполнитель
-        public decimal rate; //Стоимость выполнения часа задания
+        public Guid guid { set; get; } //Уникальный идентификатор задачи
+        public string name { set; get; } //Название задачи
+        public int priority { set; get; } //Приоритет задачи
+        public Type agent { set; get; } //Исполнитель
+        public decimal rate { set; get; } //Стоимость выполнения часа задания
 
         public override bool Equals(object obj)
         {
