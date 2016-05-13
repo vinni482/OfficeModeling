@@ -22,8 +22,8 @@ namespace OfficeModeling
             _baseEmployee._office.onClock += TaskCompleted;
         }
 
-        public Accountant(bool IsCombines, Random rand, Office office)
-            : base(rand, office)
+        public Accountant(bool IsCombines, Random rand, Office office, string employeeName)
+            : base(rand, office, employeeName)
         {
             office.onClock += TaskCompleted;
             
@@ -39,6 +39,11 @@ namespace OfficeModeling
         public override bool Equals(object obj)
         {
             return ((IPosition)obj).Name == this.Name;
+        }
+
+        public override string ToString()
+        {
+            return _name;
         }
     }
 }

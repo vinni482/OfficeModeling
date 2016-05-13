@@ -5,7 +5,6 @@ namespace OfficeModeling
 {
     class Employee
     {
-        public string employeeName;
         public List<IPosition> positions = new List<IPosition>();
         public List<WorkingDay> workingDays = new List<WorkingDay>();
         public bool IsAvailable = true; //false - в случае, если в процессе выполнения задания
@@ -14,6 +13,7 @@ namespace OfficeModeling
         public OfficeTask _task;
         public DateTime _endTaskTime;
         public Random _rand;
+        public string _employeeName;
 
         protected enum AdditionalPositions { Programmer, Designer, Tester, Manager, Cleaner };
         protected Employee _baseEmployee; //Ссылка на базовый класс для совмещаемых позиций
@@ -23,11 +23,12 @@ namespace OfficeModeling
             _baseEmployee = baseEmployee;
         }
 
-        public Employee(Random rand, Office office) //Стартовый конструктор для любого сотрудника, добавляющий рабочие дни
+        public Employee(Random rand, Office office, string employeeName) //Стартовый конструктор для любого сотрудника, добавляющий рабочие дни
         {
             _baseEmployee = this;
             _rand = rand;
             _office = office;
+            _employeeName = employeeName;
 
             #region Добавление рабочих дней
             do

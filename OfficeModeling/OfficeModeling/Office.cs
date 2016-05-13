@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace OfficeModeling
 {
@@ -18,9 +19,9 @@ namespace OfficeModeling
 
             _employeesNumber = employeesNumber;
 
-            _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand, this)); //Случайно генерируется выполняет ли директор обязанности менеджера
-            _employees.Add(new Manager(rand.Next(3), rand, this)); //Случайно генерируется количество совмещаемых должностей (0-2)
-            _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this));
+            _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee1")); //Случайно генерируется выполняет ли директор обязанности менеджера
+            _employees.Add(new Manager(rand.Next(3), rand, this, "Employee2")); //Случайно генерируется количество совмещаемых должностей (0-2)
+            _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee3"));
 
             if ((int)_employeesNumber - 3 > 0)
             {
@@ -30,43 +31,43 @@ namespace OfficeModeling
                     {
                         case Positions.Programmer:
                             {
-                                Programmer programmer = new Programmer(rand.Next(3), rand, this);
+                                Programmer programmer = new Programmer(rand.Next(3), rand, this, "Employee" + (i+4));
                                 _employees.Add(programmer);
                                 break;
                             }
                         case Positions.Designer:
                             {
-                                Designer designer = new Designer(rand.Next(3), rand, this);
+                                Designer designer = new Designer(rand.Next(3), rand, this, "Employee" + (i+4));
                                 _employees.Add(designer);
                                 break;
                             }
                         case Positions.Tester:
                             {
-                                Tester tester = new Tester(rand.Next(3), rand, this);
+                                Tester tester = new Tester(rand.Next(3), rand, this, "Employee" + (i+4));
                                 _employees.Add(tester);
                                 break;
                             }
                         case Positions.Manager:
                             {
-                                Manager manager = new Manager(rand.Next(3), rand, this);
+                                Manager manager = new Manager(rand.Next(3), rand, this, "Employee" + (i+4));
                                 _employees.Add(manager);
                                 break;
                             }
                         case Positions.Director:
                             {
-                                Director director = new Director(Convert.ToBoolean(rand.Next(2)), rand, this);
+                                Director director = new Director(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee" + (i+4));
                                 _employees.Add(director);
                                 break;
                             }
                         case Positions.Accountant:
                             {
-                                Accountant accountant = new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this);
+                                Accountant accountant = new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee" + (i+4));
                                 _employees.Add(accountant);
                                 break;
                             }
                         case Positions.Cleaner:
                             {
-                                Cleaner cleaner = new Cleaner(true, rand, this);
+                                Cleaner cleaner = new Cleaner(true, rand, this, "Employee" + (i+4));
                                 _employees.Add(cleaner);
                                 break;
                             }
@@ -84,23 +85,22 @@ namespace OfficeModeling
                 throw new Exception("Can't start the Office. The number of employees must be greater than 10.");
             else
             {
-                foreach (var item in _employees) //Проходим по списку сотрудников раз в час!
+                #region Отображение и сохранение списка сотрудников
+                string info = string.Empty;
+                foreach (var item in _employees)
                 {
-                    Console.WriteLine("Основная должность - " + item);
-
-                    Console.WriteLine(item.IsWorking(new DateTime(2016, 05, 9, 12, 30, 0)));
-
-                    foreach (var days in item.workingDays)
-                    {
-                        Console.WriteLine("\t" + days.day + " " + days.startWorkingDay + "-" + (days.hours + days.startWorkingDay));
-                    }
-
-                    foreach (var item2 in item.positions)
-                    {
-                        Console.WriteLine("\t\tСовмещает: " + item2);
-                    }
+                    info += item._employeeName + " - " + item + "\r\n";
+                    info += "\t\tГрафик работы:\r\n";
+                    foreach (var day in item.workingDays)
+                        info += "\t" + day.day + " " + day.startWorkingDay + "-" + (day.hours + day.startWorkingDay) + "\r\n";
+                    info += "\t\tСовмещаемые позиции: ";
+                    foreach (var position in item.positions)
+                        info += position + "/";
+                    info += "\r\n\r\n";
                 }
-
+                File.WriteAllText("EmployeesList.txt", info);
+                Console.WriteLine(info);
+                #endregion
 
                 for (int day = 1; day < 31; day++)
                 {

@@ -37,8 +37,8 @@ namespace OfficeModeling
             }
         }
         
-        public Director(bool IsCombines, Random rand, Office office)
-            : base(rand, office)
+        public Director(bool IsCombines, Random rand, Office office, string employeeName)
+            : base(rand, office, employeeName)
         {
             office.onClock += GiveOrders;
             
@@ -54,6 +54,11 @@ namespace OfficeModeling
         public override bool Equals(object obj)
         {
             return ((IPosition)obj).Name == this.Name;
+        }
+
+        public override string ToString()
+        {
+            return _name;
         }
     }
 }
