@@ -7,28 +7,27 @@ namespace OfficeModeling
         public static decimal _rate = 500;
         string _name = "Accountant";
 
-        public Accountant() { }
-
-        public Accountant(bool IsCombines, Random rand)
+        void TaskCompleted(DateTime time)
         {
-            #region Добавление рабочих дней
-            do
+            if (time == _baseEmployee._endTaskTime) //Какое-то оповещение добавить?
             {
-                WorkingDay workingDay = new WorkingDay() { day = (DayOfWeek)rand.Next(7), startWorkingDay = rand.Next(8, 13), hours = rand.Next(6, 9) };
-                if (!workingDays.Contains(workingDay))
-                    workingDays.Add(workingDay);
-            } while (workingDays.Count < 5);
-            #endregion
-
-            if (IsCombines)
-            {
-                positions.Add(new Manager());
+                _baseEmployee._office._runningTasks.Remove(_task);
             }
         }
 
-        public override void Do(OfficeTask task, DateTime startTaskTime)
+        public Accountant(Employee baseEmployee)
+            : base(baseEmployee)
         {
-            Console.WriteLine("Accountant");
+            _baseEmployee._office.onClock += TaskCompleted;
+        }
+
+        public Accountant(bool IsCombines, Random rand, Office office)
+            : base(rand, office)
+        {
+            office.onClock += TaskCompleted;
+            
+            if (IsCombines)
+                positions.Add(new Manager(this));
         }
 
         public string Name

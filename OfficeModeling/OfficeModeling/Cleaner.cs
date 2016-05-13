@@ -7,28 +7,29 @@ namespace OfficeModeling
         public static decimal _rate = 200;
         string _name = "Cleaner";
 
-        public Cleaner() { }
-
-        public Cleaner(bool ConstructorForTrueCleaner, Random rand)
+        void TaskCompleted(DateTime time)
         {
-            #region Добавление рабочих дней
-            do
+            if (time == _baseEmployee._endTaskTime) //Какое-то оповещение добавить?
             {
-                WorkingDay workingDay = new WorkingDay() { day = (DayOfWeek)rand.Next(7), startWorkingDay = rand.Next(8, 13), hours = rand.Next(6, 9) };
-                if (!workingDays.Contains(workingDay))
-                    workingDays.Add(workingDay);
-            } while (workingDays.Count < 5);
-            #endregion
+                _baseEmployee._office._runningTasks.Remove(_task);
+            }
+        }
+
+        public Cleaner(Employee baseEmployee)
+            : base(baseEmployee)
+        {
+            _baseEmployee._office.onClock += TaskCompleted;
+        }
+
+        public Cleaner(bool ConstructorForTrueCleaner, Random rand, Office office)
+            : base(rand, office)
+        {
+            office.onClock += TaskCompleted;
         }
 
         public string Name
         {
             get { return _name; }
-        }
-
-        public override void Do(OfficeTask task, DateTime startTaskTime)
-        {
-            Console.WriteLine("Cleaner");
         }
 
         public override bool Equals(object obj)

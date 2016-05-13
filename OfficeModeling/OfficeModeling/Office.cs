@@ -10,7 +10,7 @@ namespace OfficeModeling
         uint _employeesNumber { set; get; }
 
         public List<OfficeTask> _tasks = new List<OfficeTask>();
-        List<OfficeTask> _runningTasks = new List<OfficeTask>();
+        public List<OfficeTask> _runningTasks = new List<OfficeTask>();
 
         public Office(uint employeesNumber)
         {
@@ -19,8 +19,8 @@ namespace OfficeModeling
             _employeesNumber = employeesNumber;
 
             _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand, this)); //Случайно генерируется выполняет ли директор обязанности менеджера
-            _employees.Add(new Manager(rand.Next(3), rand)); //Случайно генерируется количество совмещаемых должностей (0-2)
-            _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand));
+            _employees.Add(new Manager(rand.Next(3), rand, this)); //Случайно генерируется количество совмещаемых должностей (0-2)
+            _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this));
 
             if ((int)_employeesNumber - 3 > 0)
             {
@@ -30,22 +30,26 @@ namespace OfficeModeling
                     {
                         case Positions.Programmer:
                             {
-                                _employees.Add(new Programmer(rand.Next(3), rand));
+                                Programmer programmer = new Programmer(rand.Next(3), rand, this);
+                                _employees.Add(programmer);
                                 break;
                             }
                         case Positions.Designer:
                             {
-                                _employees.Add(new Designer(rand.Next(3), rand));
+                                Designer designer = new Designer(rand.Next(3), rand, this);
+                                _employees.Add(designer);
                                 break;
                             }
                         case Positions.Tester:
                             {
-                                _employees.Add(new Tester(rand.Next(3), rand));
+                                Tester tester = new Tester(rand.Next(3), rand, this);
+                                _employees.Add(tester);
                                 break;
                             }
                         case Positions.Manager:
                             {
-                                _employees.Add(new Manager(rand.Next(3), rand));
+                                Manager manager = new Manager(rand.Next(3), rand, this);
+                                _employees.Add(manager);
                                 break;
                             }
                         case Positions.Director:
@@ -56,12 +60,14 @@ namespace OfficeModeling
                             }
                         case Positions.Accountant:
                             {
-                                _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand));
+                                Accountant accountant = new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this);
+                                _employees.Add(accountant);
                                 break;
                             }
                         case Positions.Cleaner:
                             {
-                                _employees.Add(new Cleaner(true, rand));
+                                Cleaner cleaner = new Cleaner(true, rand, this);
+                                _employees.Add(cleaner);
                                 break;
                             }
                     }
@@ -109,7 +115,6 @@ namespace OfficeModeling
                             for(int j=0; j<_employees.Count; j++)
                             {
                                 //Вызываем метод у сотрудника. В него передаем задачу. В сотруднике генерируем случайное время 1-2 часа. Ставим флаг available=false
-                                //Из задач переносим в список выполняющихся.
                                 //И подписаться ранее надо на сотрудника. Он сгенерирует потом событие завершения выполнения задания и вернет задачу, которую удалить
                                 if (_employees[j].IsAvailable && _employees[j].IsWorking(time)) //Если сотрудник в смене и не занят
                                 {
@@ -138,6 +143,11 @@ namespace OfficeModeling
                                     }
                                 }
                             }
+                        }
+
+                        for (int i = 0; i < _tasks.Count; i++) //Оставшиеся задания отдаем на фриланс
+                        {
+                            //Если это не уборка офиса
                         }
                     }
                 }

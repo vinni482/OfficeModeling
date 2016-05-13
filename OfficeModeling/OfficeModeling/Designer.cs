@@ -7,64 +7,66 @@ namespace OfficeModeling
         public static decimal _rate = 400;
         string _name = "Designer";
 
-        public Designer() { }
-
-        public Designer(int combiningPositions, Random rand)
+        void TaskCompleted(DateTime time)
         {
-            #region Добавление рабочих дней
-            do
+            if (time == _baseEmployee._endTaskTime) //Какое-то оповещение добавить?
             {
-                WorkingDay workingDay = new WorkingDay() { day = (DayOfWeek)rand.Next(7), startWorkingDay = rand.Next(8, 13), hours = rand.Next(6, 9) };
-                if (!workingDays.Contains(workingDay))
-                    workingDays.Add(workingDay);
-            } while (workingDays.Count < 5);
-            #endregion
+                _baseEmployee._office._runningTasks.Remove(_task);
+            }
+        }
 
-            
+        public Designer(Employee baseEmployee)
+            : base(baseEmployee)
+        {
+            _baseEmployee._office.onClock += TaskCompleted;
+        }
+
+        public Designer(int combiningPositions, Random rand, Office office)
+            : base(rand, office)
+        {
+            office.onClock += TaskCompleted;
+
+            #region Добавление совмещаемых должностей
             for (int i = 0; i < combiningPositions; i++)
             {
                 switch ((AdditionalPositions)rand.Next(0, 5))
                 {
                     case AdditionalPositions.Programmer:
                         {
-                            Programmer prog = new Programmer();
+                            Programmer prog = new Programmer(this);
                             if (!positions.Contains(prog))
                                 positions.Add(prog);
                             break;
                         }
                     case AdditionalPositions.Tester:
                         {
-                            Tester tester = new Tester();
+                            Tester tester = new Tester(this);
                             if (!positions.Contains(tester))
                                 positions.Add(tester);
                             break;
                         }
                     case AdditionalPositions.Manager:
                         {
-                            Manager manager = new Manager();
+                            Manager manager = new Manager(this);
                             if (!positions.Contains(manager))
                                 positions.Add(manager);
                             break;
                         }
                     case AdditionalPositions.Cleaner:
                         {
-                            Cleaner cleaner = new Cleaner();
+                            Cleaner cleaner = new Cleaner(this);
                             if (!positions.Contains(cleaner))
                                 positions.Add(cleaner);
                             break;
                         }
                 }
             }
+            #endregion
         }
         
         public string Name
         {
             get { return _name; }
-        }
-
-        public override void Do(OfficeTask task, DateTime startTaskTime)
-        {
-            Console.WriteLine("Designer");
         }
 
         public override bool Equals(object obj)
