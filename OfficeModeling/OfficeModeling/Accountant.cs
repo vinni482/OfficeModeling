@@ -12,6 +12,7 @@ namespace OfficeModeling
             if (time == _baseEmployee._endTaskTime) //Какое-то оповещение добавить?
             {
                 _baseEmployee._office._runningTasks.Remove(_task);
+                _baseEmployee.IsAvailable = true;
             }
         }
 

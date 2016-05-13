@@ -9,9 +9,12 @@ namespace OfficeModeling
 
         void TaskCompleted(DateTime time)
         {
+            Console.WriteLine("current=" + time + "endTime" + _baseEmployee._endTaskTime);
             if (time == _baseEmployee._endTaskTime) //Какое-то оповещение добавить?
             {
+                Console.WriteLine("Задача завершена!!!" + _baseEmployee._endTaskTime + "task-" + _task);
                 _baseEmployee._office._runningTasks.Remove(_task);
+                _baseEmployee.IsAvailable = true;
             }
         }
 

@@ -106,6 +106,7 @@ namespace OfficeModeling
                 {
                     for (int hour = 0; hour < 24; hour++)
                     {
+                        System.Threading.Thread.Sleep(100);
                         DateTime time = new DateTime(2016, 06, day, hour, 0, 0);
                         onClock(time);
 
@@ -114,8 +115,6 @@ namespace OfficeModeling
                         {
                             for(int j=0; j<_employees.Count; j++)
                             {
-                                //Вызываем метод у сотрудника. В него передаем задачу. В сотруднике генерируем случайное время 1-2 часа. Ставим флаг available=false
-                                //И подписаться ранее надо на сотрудника. Он сгенерирует потом событие завершения выполнения задания и вернет задачу, которую удалить
                                 if (_employees[j].IsAvailable && _employees[j].IsWorking(time)) //Если сотрудник в смене и не занят
                                 {
                                     if (_employees[j].GetType() == _tasks[i].agent) //Проверяем, подходит ли по должности

@@ -5,6 +5,7 @@ namespace OfficeModeling
 {
     class Employee
     {
+        public string employeeName;
         public List<IPosition> positions = new List<IPosition>();
         public List<WorkingDay> workingDays = new List<WorkingDay>();
         public bool IsAvailable = true; //false - в случае, если в процессе выполнения задания
@@ -51,8 +52,10 @@ namespace OfficeModeling
 
         public virtual void Do(OfficeTask task, DateTime startTaskTime)
         {
-            _endTaskTime = new DateTime(startTaskTime.Year, startTaskTime.Month, startTaskTime.Day, startTaskTime.Hour + _rand.Next(3), startTaskTime.Minute, startTaskTime.Second);
-            //IsAvailable = false; 
+            Console.WriteLine("!!" + task + " " + startTaskTime);
+            _task = task;
+            _endTaskTime = new DateTime(startTaskTime.Year, startTaskTime.Month, startTaskTime.Day, startTaskTime.Hour + _rand.Next(1, 3), startTaskTime.Minute, startTaskTime.Second);
+            IsAvailable = false; 
         }
     }
 }
