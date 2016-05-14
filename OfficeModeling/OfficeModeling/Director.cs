@@ -18,13 +18,13 @@ namespace OfficeModeling
             new OfficeTask { agent = typeof(Cleaner), name = "Clean the office", rate = Cleaner._rate }
         };
 
-        void GiveOrders(DateTime time)
+        void GiveOrders(object sender, DateTime time)
         {
             if (this.IsWorking(time) && this.IsAvailable)
             {
                 for (int i = 0; i < _rand.Next(1, 4); i++)
                 {
-                    Console.Write(time + " " + _name + ": ");
+                    Console.Write(time + " " + _employeeName + " " + _name + ": ");
 
                     OfficeTask officetask = _setOfDuties[_rand.Next(6)];
                     officetask.guid = Guid.NewGuid();
@@ -50,7 +50,7 @@ namespace OfficeModeling
         {
             get { return _name; }
         }
-
+        
         public override bool Equals(object obj)
         {
             return ((IPosition)obj).Name == this.Name;

@@ -48,6 +48,7 @@
     <Compile Include="Designer.cs" />
     <Compile Include="Director.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="Freelance.cs" />
     <Compile Include="IPosition.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Office.cs" />

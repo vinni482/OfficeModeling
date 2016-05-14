@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace OfficeModeling
 {
@@ -8,10 +9,13 @@ namespace OfficeModeling
     {
         enum Positions { Programmer, Designer, Tester, Manager, Director, Accountant, Cleaner };
         List<Employee> _employees = new List<Employee>();
+
+        Freelance _freelance { set; get; }
         uint _employeesNumber { set; get; }
 
         public List<OfficeTask> _tasks = new List<OfficeTask>();
         public List<OfficeTask> _runningTasks = new List<OfficeTask>();
+        public List<string> info = new List<string>();
 
         public Office(uint employeesNumber)
         {
@@ -22,6 +26,7 @@ namespace OfficeModeling
             _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee1")); //Случайно генерируется выполняет ли директор обязанности менеджера
             _employees.Add(new Manager(rand.Next(3), rand, this, "Employee2")); //Случайно генерируется количество совмещаемых должностей (0-2)
             _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee3"));
+            _freelance = new Freelance(rand, this);
 
             if ((int)_employeesNumber - 3 > 0)
             {
@@ -76,7 +81,7 @@ namespace OfficeModeling
             }
         }
 
-        public delegate void ForEmployees(DateTime time);
+        public delegate void ForEmployees(object sender, DateTime time);
         public event ForEmployees onClock;
 
         public void Start()
@@ -106,9 +111,9 @@ namespace OfficeModeling
                 {
                     for (int hour = 0; hour < 24; hour++)
                     {
-                        System.Threading.Thread.Sleep(100);
+                        //System.Threading.Thread.Sleep(50);
                         DateTime time = new DateTime(2016, 06, day, hour, 0, 0);
-                        onClock(time);
+                        onClock(this, time);
 
                         //Проходим по списку задач, раздавая задания соответствующим сотрудникам, если есть в наличии, и свободен, и если подходит по должности
                         for(int i=0; i<_tasks.Count; i++)
@@ -146,7 +151,14 @@ namespace OfficeModeling
 
                         for (int i = 0; i < _tasks.Count; i++) //Оставшиеся задания отдаем на фриланс
                         {
-                            //Если это не уборка офиса
+                            if (_tasks[i].agent != typeof(Cleaner))
+                            {
+                                _freelance.Do(_tasks[i], time);
+                                _runningTasks.Add(_tasks[i]);
+                                _tasks.Remove(_tasks[i]);
+                                i--;
+                                break;
+                            }
                         }
                     }
                 }

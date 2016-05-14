@@ -17,7 +17,7 @@ namespace OfficeModeling
 
         public override string ToString()
         {
-            return name + " (priority: " + priority + ", rate: " + rate +  ")";
+            return name + " (pr-ty:" + priority + ", rate:" + rate +  ")";
         }
     }
 }
