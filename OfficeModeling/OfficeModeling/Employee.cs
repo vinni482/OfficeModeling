@@ -16,7 +16,8 @@ namespace OfficeModeling
         public DateTime _endTaskTime { set; get; }
         public Random _rand { set; get; }
         public string _employeeName { set; get; }
-        
+        public decimal earned { set; get; }
+
         protected enum AdditionalPositions { Programmer, Designer, Tester, Manager, Cleaner };
         protected Employee _baseEmployee; //Ссылка на базовый класс для совмещаемых позиций
 
@@ -58,7 +59,7 @@ namespace OfficeModeling
             Console.WriteLine(startTaskTime + " " + _employeeName + " Выполняется: " + task);
             _task = task;
             _startTaskTime = startTaskTime;
-            _endTaskTime = new DateTime(startTaskTime.Year, startTaskTime.Month, startTaskTime.Day, startTaskTime.Hour + _rand.Next(1, 3), startTaskTime.Minute, startTaskTime.Second);
+            _endTaskTime = startTaskTime.AddHours(_rand.Next(1, 3));
             IsAvailable = false; 
         }
     }

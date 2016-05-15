@@ -6,20 +6,20 @@ namespace OfficeModeling
 {
     class Director : Employee, IPosition
     {
-        public static decimal _rate = 800;
+        public static decimal _monthRate = 4000;
         string _name = "Director";
         List<OfficeTask> _setOfDuties = new List<OfficeTask>()
         {
-            new OfficeTask { agent = typeof(Programmer), name = "Write code", rate = Programmer._rate },
-            new OfficeTask { agent = typeof(Designer), name = "Draw the layout", rate = Designer._rate },
-            new OfficeTask { agent = typeof(Tester), name = "Test the program", rate = Tester._rate },
-            new OfficeTask { agent = typeof(Manager), name = "Sell services", rate = Manager._rate },
-            new OfficeTask { agent = typeof(Accountant), name = "Make report", rate = Accountant._rate },
-            new OfficeTask { agent = typeof(Cleaner), name = "Clean the office", rate = Cleaner._rate }
+            new OfficeTask { agent = typeof(Programmer), name = "Write code", rate = Programmer._hourRate },
+            new OfficeTask { agent = typeof(Designer), name = "Draw the layout", rate = Designer._hourRate },
+            new OfficeTask { agent = typeof(Tester), name = "Test the program", rate = Tester._hourRate },
+            new OfficeTask { agent = typeof(Manager), name = "Sell services", rate = Manager._hourRate },
+            new OfficeTask { agent = typeof(Accountant), name = "Make report", rate = Accountant._hourRate },
+            new OfficeTask { agent = typeof(Cleaner), name = "Clean the office", rate = Cleaner._hourRate }
         };
 
         void GiveOrders(object sender, DateTime time)
-        {
+        {            
             if (this.IsWorking(time) && this.IsAvailable)
             {
                 for (int i = 0; i < _rand.Next(1, 4); i++)

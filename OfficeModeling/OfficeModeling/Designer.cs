@@ -4,7 +4,7 @@ namespace OfficeModeling
 {
     class Designer : Employee, IPosition
     {
-        public static decimal _rate = 400;
+        public static decimal _hourRate = 20;
         string _name = "Designer";
 
         void TaskCompleted(object sender, DateTime time)

@@ -4,7 +4,8 @@ namespace OfficeModeling
 {
     class Manager : Employee, IPosition
     {
-        public static decimal _rate = 600;
+        public static decimal _monthRate = 1500;
+        public static decimal _hourRate = 16; //Для тех, кто совмещает основную должность с этой\фрилансеров
         string _name = "Manager";
 
         void TaskCompleted(object sender, DateTime time)

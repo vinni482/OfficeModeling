@@ -4,7 +4,7 @@ namespace OfficeModeling
 {
     class Cleaner : Employee, IPosition
     {
-        public static decimal _rate = 200;
+        public static decimal _hourRate = 5;
         string _name = "Cleaner";
 
         void TaskCompleted(object sender, DateTime time)

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeModeling
 {
@@ -14,8 +10,14 @@ namespace OfficeModeling
         OfficeTask _task;
         DateTime _startTaskTime;
         DateTime _endTaskTime;
+        CompletedTask _completedTask;
 
-        public List<CompletedTask> completedTasks = new List<CompletedTask>();
+        public CompletedTask completedTask
+        {
+            get { return _completedTask; }
+        }
+
+        public decimal earned { set; get; }
 
         public Freelance(Random rand, Office office)
         {
@@ -32,14 +34,13 @@ namespace OfficeModeling
                 _office.info.Add(info);
                 Console.WriteLine(info);
                 _office._runningTasks.Remove(_task);
-                CompletedTask completedTask = new CompletedTask
+                _completedTask = new CompletedTask
                 {
                     startTime = _startTaskTime,
                     endTime = _endTaskTime,
                     name = _task.name,
                     rate = _task.rate
                 };
-                completedTasks.Add(completedTask);
             }
         }
 
@@ -48,7 +49,7 @@ namespace OfficeModeling
             Console.WriteLine(startTaskTime + " " + _name + " Выполняется: " + task);
             _task = task;
             _startTaskTime = startTaskTime;
-            _endTaskTime = new DateTime(startTaskTime.Year, startTaskTime.Month, startTaskTime.Day, startTaskTime.Hour + _rand.Next(1, 3), startTaskTime.Minute, startTaskTime.Second);
+            _endTaskTime = startTaskTime.AddHours(_rand.Next(1, 3));
         }
 
         public override string ToString()

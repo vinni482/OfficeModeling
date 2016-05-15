@@ -5,7 +5,7 @@ namespace OfficeModeling
 {
     class Tester : Employee, IPosition
     {
-        public static decimal _rate = 700;
+        public static decimal _hourRate = 22;
         string _name = "Tester";
 
         void TaskCompleted(object sender, DateTime time)

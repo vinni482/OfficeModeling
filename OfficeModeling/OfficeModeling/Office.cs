@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace OfficeModeling
 {
     class Office
     {
         enum Positions { Programmer, Designer, Tester, Manager, Director, Accountant, Cleaner };
-        List<Employee> _employees = new List<Employee>();
+        Random rand = new Random();
 
-        Freelance _freelance { set; get; }
-        uint _employeesNumber { set; get; }
+        int _employeesNumber { set; get; }
 
+        public List<Employee> _employees = new List<Employee>();
+        public List<Freelance> _freelancers = new List<Freelance>();
         public List<OfficeTask> _tasks = new List<OfficeTask>();
         public List<OfficeTask> _runningTasks = new List<OfficeTask>();
         public List<string> info = new List<string>();
 
-        public Office(uint employeesNumber)
+        public Office(int employeesNumber)
         {
-            Random rand = new Random();
-
             _employeesNumber = employeesNumber;
 
             _employees.Add(new Director(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee1")); //Случайно генерируется выполняет ли директор обязанности менеджера
             _employees.Add(new Manager(rand.Next(3), rand, this, "Employee2")); //Случайно генерируется количество совмещаемых должностей (0-2)
             _employees.Add(new Accountant(Convert.ToBoolean(rand.Next(2)), rand, this, "Employee3"));
-            _freelance = new Freelance(rand, this);
 
             if ((int)_employeesNumber - 3 > 0)
             {
@@ -111,14 +108,12 @@ namespace OfficeModeling
                 {
                     for (int hour = 0; hour < 24; hour++)
                     {
-                        //System.Threading.Thread.Sleep(50);
                         DateTime time = new DateTime(2016, 06, day, hour, 0, 0);
                         onClock(this, time);
-
-                        //Проходим по списку задач, раздавая задания соответствующим сотрудникам, если есть в наличии, и свободен, и если подходит по должности
-                        for(int i=0; i<_tasks.Count; i++)
+                        
+                        for (int i = 0; i < _tasks.Count; i++) //Проходим по списку задач, раздавая задания соответствующим сотрудникам, если есть в наличии, и свободен, и если подходит по должности
                         {
-                            for(int j=0; j<_employees.Count; j++)
+                            for (int j = 0; j < _employees.Count; j++)
                             {
                                 if (_employees[j].IsAvailable && _employees[j].IsWorking(time)) //Если сотрудник в смене и не занят
                                 {
@@ -153,20 +148,22 @@ namespace OfficeModeling
                         {
                             if (_tasks[i].agent != typeof(Cleaner))
                             {
-                                _freelance.Do(_tasks[i], time);
+                                Freelance freelancer = new Freelance(rand, this);
+                                freelancer.Do(_tasks[i], time);
+                                _freelancers.Add(freelancer);
                                 _runningTasks.Add(_tasks[i]);
                                 _tasks.Remove(_tasks[i]);
                                 i--;
-                                break;
                             }
                         }
+
+                        if(time.Hour == 23)
+                            Accountant.PayFreelancers(this, time);    
+                        if (time.Day % 7 == 0 && time.Hour == 23)
+                            Accountant.PayEmployees(this, time);
                     }
                 }
-
-                foreach (var item in _tasks)
-                {
-                    Console.WriteLine(item);
-                }
+                Accountant.SummaryReport(this);
             }
         }
     }

@@ -1,10 +1,12 @@
-﻿namespace OfficeModeling
+﻿using System;
+
+namespace OfficeModeling
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Office office = new Office(10);
+            Office office = new Office(new Random().Next(10, 101));
             office.Start();
         }
     }
